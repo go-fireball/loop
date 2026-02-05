@@ -1,0 +1,15 @@
+ratified: false
+plan_id: ITER-0001
+milestone: "<MILESTONE_ID>"
+
+checks:
+  decision_lock_respected: false
+  invariants_respected: false
+  constitution_respected: false
+  tests_present: false
+  docs_updated: false
+  no_infra_creep: false
+
+notes: "Set to true only when QA/Reviewer-Ratifier confirms all required checks."
+ratified_by: "<ROLE>"
+ratified_at: "<YYYY-MM-DDTHH:MM:SSZ>"

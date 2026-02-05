@@ -1,0 +1,13 @@
+-- Planner-owned schema contract
+-- plan_id: ITER-0001
+-- Instructions:
+-- 1) Add explicit DDL/DML changes per milestone.
+-- 2) Keep changes incremental and reversible where possible.
+-- 3) Link each change to acceptance criteria in ai/plan.md.
+-- 4) Dev must not invent schema outside this file and approved plan.
+
+-- Example placeholder:
+-- CREATE TABLE example_entity (
+--   id TEXT PRIMARY KEY,
+--   created_at TIMESTAMP NOT NULL
+-- );
