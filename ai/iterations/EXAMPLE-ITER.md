@@ -9,7 +9,7 @@
 - [SEQ-002] [ARCHITECT] Decision: Lock architecture to single deployable web app + relational DB (no event bus). | Why: Reduces operational overhead and keeps design aligned with early-stage requirements.
 - [SEQ-003] [PLANNER] Decision: Define Milestone 1 as API + UI CRUD + auth guard; include initial `tasks` schema in `ai/schema/schema.sql`. | Why: Delivers end-to-end vertical slice with testable acceptance criteria.
 - [SEQ-004] [DEV_BUILDER] Decision: Implemented Milestone 1 endpoints, DB model, and basic task list/create UI with tests. | Why: Meets milestone scope without introducing deferred complexity.
-- [SEQ-005] [QA_REVIEWER_RATIFIER] Decision: FAIL (#1) — auth invariant violation: update endpoint allowed unauthenticated access. | Why: Violates locked security invariant requiring authenticated task mutation.
+- [SEQ-005] [QA_REVIEWER_RATIFIER] Decision: FAIL (#1) -- auth invariant violation: update endpoint allowed unauthenticated access. | Why: Violates locked security invariant requiring authenticated task mutation.
 - [SEQ-006] [DEV_BUILDER] Decision: Added auth middleware to update/delete endpoints and regression tests for 401 behavior. | Why: Closes cited invariant gap and prevents recurrence.
 - [SEQ-007] [QA_REVIEWER_RATIFIER] Decision: PASS + ratified=true for Milestone 1 after re-test of auth, CRUD flow, and schema checks. | Why: Acceptance criteria and invariants now satisfied.
 

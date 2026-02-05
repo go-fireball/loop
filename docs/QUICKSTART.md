@@ -28,7 +28,7 @@ Paste and adjust:
 
 ## 3) Default baton order for Phase 1
 
-`PRODUCT_OWNER → SENIOR_JUDGMENTAL_ENGINEER → ARCHITECT → PLANNER → DEV_BUILDER → SECURITY_EXPERT → OPS_SRE → QA_REVIEWER_RATIFIER → (next milestone loops via PLANNER/DEV_BUILDER, or escalates to JUDGE_MEDIATOR when needed)`
+`PRODUCT_OWNER -> SENIOR_JUDGMENTAL_ENGINEER -> ARCHITECT -> PLANNER -> DEV_BUILDER -> SECURITY_EXPERT -> OPS_SRE -> QA_REVIEWER_RATIFIER -> (next milestone loops via PLANNER/DEV_BUILDER, or escalates to JUDGE_MEDIATOR when needed)`
 
 ## 4) First-iteration runbook (10-15 minutes)
 
