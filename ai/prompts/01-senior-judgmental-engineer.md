@@ -7,20 +7,23 @@
 - `ai/requirements.md`
 - `ai/constitution.yaml`
 - `ai/judgment.yaml`
-- `ai/plan.md`
+- `ai/decision-lock.yaml` (if present)
+- `ai/active_agent.txt`
 
 3) Allowed edits (only):
-- `ai/plan.md` (Simplification Plan, Deferred Complexity, Exit Criteria only)
+- `ai/simplification.md`
 - `ai/iterations/ITER-0001.md`
 - `ai/active_agent.txt`
 
 4) Actions:
 - Make explicit 80/20 or 90/10 simplification calls.
-- Add/refresh sections:
+- Update `ai/simplification.md` sections:
   - `Simplification Plan`
   - `Deferred Complexity`
-  - `Exit Criteria for Scaling Up`
-- Do not set stack decisions and do not edit `ai/decision-lock.yaml`.
+  - `Complexity Budget`
+  - `Exit Criteria to Add Complexity Later`
+  - `Open Questions (Only If Truly Blocking)`
+- Do not set stack decisions.
 - Cannot write production code.
 
 5) End-of-turn required steps:

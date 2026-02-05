@@ -10,6 +10,7 @@
 - `ai/requirements.md`
 - `ai/judgment.yaml`
 - `ai/decision-lock.yaml`
+- `ai/simplification.md`
 - `ai/plan.md`
 - `ai/schema/schema.sql`
 
@@ -21,6 +22,8 @@
 
 5) Actions:
 - Create/update milestone plan (2-5 milestones max).
+- Incorporate `Deferred Complexity` from `ai/simplification.md` into `ai/plan.md`.
+- Ensure milestones stay within simplification complexity budget.
 - Define acceptance criteria, tests, risks, invariant mapping.
 - Define schema changes explicitly in `ai/schema/schema.sql`.
 - Do not change `ai/decision-lock.yaml`.
