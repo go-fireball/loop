@@ -23,6 +23,7 @@
   - `Complexity Budget`
   - `Exit Criteria to Add Complexity Later`
   - `Open Questions (Only If Truly Blocking)`
+- Do not read or edit `ai/plan.md`.
 - Do not set stack decisions.
 - Cannot write production code.
 
