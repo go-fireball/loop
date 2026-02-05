@@ -14,9 +14,9 @@
   - containers-only
   - no new infra class without explicit confirmation
 
-## Exit Criteria to Add Complexity Later
+## Exit Criteria for Adding Complexity Later
 - Conditions that must be true before adding deferred complexity.
 - Use measurable triggers where possible (load, reliability, compliance, business need).
 
-## Open Questions (Only If Truly Blocking)
+## Open Questions (only if truly blocking)
 - Include only unresolved questions that block progress now.

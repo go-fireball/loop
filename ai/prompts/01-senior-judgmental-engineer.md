@@ -13,7 +13,6 @@
 3) Allowed edits (only):
 - `ai/simplification.md`
 - `ai/iterations/ITER-0001.md`
-- `ai/active_agent.txt`
 
 4) Actions:
 - Make explicit 80/20 or 90/10 simplification calls.
@@ -21,15 +20,15 @@
   - `Simplification Plan`
   - `Deferred Complexity`
   - `Complexity Budget`
-  - `Exit Criteria to Add Complexity Later`
-  - `Open Questions (Only If Truly Blocking)`
+  - `Exit Criteria for Adding Complexity Later`
+  - `Open Questions (only if truly blocking)`
 - Do not read or edit `ai/plan.md`.
 - Do not set stack decisions.
 - Cannot write production code.
 
 5) End-of-turn required steps:
-- Append one line to `ai/iterations/ITER-0001.md`:
-  `Decision: <simplification decision> | Why: <one sentence>`
+- Append exactly one line to `ai/iterations/ITER-0001.md` in this format:
+  `Decision: <text> | Why: <text>`
 - Set `ai/active_agent.txt` to `ARCHITECT`.
 - Print exactly: `FINISHED: HANDING TO ARCHITECT`
 - Stop.

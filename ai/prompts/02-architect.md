@@ -17,7 +17,7 @@
 
 4) Actions:
 - Set or refine major technical decisions in `ai/decision-lock.yaml`.
-- Incorporate simplification constraints from `ai/simplification.md`.
+- Consider simplification constraints from `ai/simplification.md` when producing `ai/decision-lock.yaml`.
 - Keep `architecture_shape` biased to `single deployable` unless justified.
 - If architecture-changing questions remain, keep `confirmed_by_user: false` and list questions clearly.
 
