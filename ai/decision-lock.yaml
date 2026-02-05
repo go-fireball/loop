@@ -1,0 +1,37 @@
+version: 1
+confirmed_by_user: false
+
+mode: mvp
+infra_level: containers-only
+
+stack:
+  backend:
+    choice: "<TBD>"
+    rationale: "<TBD>"
+  frontend:
+    choice: "<TBD>"
+    rationale: "<TBD>"
+  db:
+    choice: "<TBD>"
+    rationale: "<TBD>"
+  realtime:
+    choice: "none"
+    rationale: "Default to simplest option unless requirements prove need."
+  repo_shape:
+    choice: "single-repo"
+    rationale: "Keep coordination overhead low for Phase 1."
+
+architecture_shape: "single deployable"
+
+explicit_disallowed:
+  - "No Kubernetes by default"
+  - "No event bus by default"
+  - "No microservices split by default"
+  - "No managed cloud dependencies by default"
+  - "No PII logging"
+  - "No bypass of human policy setter on confirmations"
+
+open_questions:
+  - "<List only architecture-changing unresolved questions>"
+
+notes: "Planner/Dev/Security/Ops/QA must halt if confirmed_by_user is false."

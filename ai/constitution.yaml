@@ -1,0 +1,36 @@
+version: 1
+human_policy_setter:
+  required: true
+  owner: "Product leadership / designated human approver"
+
+budget:
+  cap_monthly_usd: "<SET_ME>"
+  cap_project_usd: "<SET_ME>"
+  notes: "No architecture or vendor change may bypass budget caps."
+
+privacy:
+  pii_logging: forbidden
+  secrets_in_logs: forbidden
+  data_minimization: required
+  retention_policy: "<SET_ME>"
+
+risk:
+  allowed_risk_level: low_to_moderate
+  forbidden_risks:
+    - "Shipping without minimum security review"
+    - "Handling regulated data without explicit policy"
+
+forbidden_actions:
+  - "Destructive production changes without rollback plan"
+  - "Bypassing decision-lock confirmation"
+  - "Introducing unmanaged third-party services without approval"
+
+infra_policy:
+  allowed_infra_levels:
+    - containers-only
+  default_infra_level: containers-only
+
+emergency_stop:
+  enabled: true
+  trigger_phrase: "EMERGENCY STOP"
+  effect: "All roles halt; baton returns to PRODUCT_OWNER for human direction."

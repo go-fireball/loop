@@ -1,0 +1,39 @@
+version: 1
+mode: mvp
+infra_level: containers-only
+
+invariants:
+  - "Automated tests exist for changed business logic"
+  - "Boundaries are explicit (API, module, or service boundaries)"
+  - "Structured logging for key flows and failures"
+  - "Configuration via environment/config files, not hardcoded values"
+  - "No secrets committed to repository"
+  - "Docs updated for behavior or contract changes"
+
+non_goals:
+  - "No Kubernetes by default"
+  - "No event bus by default"
+  - "No microservices split by default"
+  - "No managed cloud dependencies by default"
+
+upgrade_path:
+  trigger_conditions:
+    - "Sustained load exceeds current architecture thresholds"
+    - "Compliance or reliability needs exceed mvp controls"
+  next_modes:
+    - poc
+    - enterprise
+
+stack_policy:
+  decision_mode: explicit_confirmation_required
+  backend_options: ["python", "node", "go", "java", "dotnet", "other"]
+  frontend_options: ["none", "react", "vue", "svelte", "server-rendered", "other"]
+  db_options: ["none", "sqlite", "postgres", "mysql", "mongodb", "other"]
+  realtime_options: ["none", "polling", "websocket", "queue", "other"]
+  repo_shape_options: ["single-repo", "monorepo", "multi-repo"]
+
+definition_of_done:
+  - "Decision lock confirmed by authorized role"
+  - "Plan milestone acceptance criteria met"
+  - "Security and Ops checks pass or are explicitly waived by policy"
+  - "QA verdict PASS and ratify.yaml ratified true"
