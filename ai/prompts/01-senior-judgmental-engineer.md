@@ -13,6 +13,9 @@
 3) Allowed edits (only):
 - `ai/simplification.md`
 - `ai/iterations/ITER-0001.md`
+- `ai/active_agent.txt`
+- `ai/next_agent.yaml`
+- `ai/next_agent.md`
 
 4) Actions:
 - Make explicit 80/20 or 90/10 simplification calls.
@@ -30,6 +33,16 @@
 5) End-of-turn required steps:
 - Append exactly one line to `ai/iterations/ITER-0001.md` in this format:
   `Decision: <text> | Why: <text>`
+- Write/overwrite `ai/next_agent.yaml` for `ARCHITECT` with:
+  - `next_role: ARCHITECT`
+  - `prompt_file: ai/prompts/02-architect.md`
+  - `read`: `ai/requirements.md`, `ai/constitution.yaml`, `ai/judgment.yaml`, `ai/simplification.md`, `ai/decision-lock.yaml`
+  - `allowed_edits`: `ai/decision-lock.yaml`, `ai/iterations/ITER-0001.md`, `ai/active_agent.txt`, `ai/next_agent.yaml`, `ai/next_agent.md`
+  - `stop_conditions` with:
+    - `WAITING FOR BATON` when `ai/active_agent.txt` is not `ARCHITECT`
+  - `success_criteria` (2-5 bullets) for locked decisions and iteration log update
+  - `handoff_on_success.print_exact: FINISHED: HANDING TO <PRODUCT_OWNER|PLANNER>`
+- Optionally mirror the handoff in `ai/next_agent.md` (authoritative source remains YAML).
 - Set `ai/active_agent.txt` to `ARCHITECT`.
 - Print exactly: `FINISHED: HANDING TO ARCHITECT`
 - Stop.
