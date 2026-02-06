@@ -135,3 +135,19 @@ Fix:
 - [ ] Security/Ops/QA reviews are recorded in `ai/review.md`.
 - [ ] Ratification is recorded in `ai/ratify.yaml` when QA passes.
 - [ ] `ai/iterations/ITER-0001.md` contains role-by-role one-line decisions and clear baton flow.
+
+## Engineering Defaults (Locked by Architect)
+
+- Architect locks `engineering_defaults` in `ai/decision-lock.yaml` (language, module format, style, testing strategy).
+- For Node/Nuxt/Vue stacks, TypeScript is the default unless Architect records an explicit exception rationale.
+
+## Milestone Acceptance Criteria (Artifacts + Behavior)
+
+- Planner must define both artifact checks (files/deps/markers) and behavior checks (observable outcomes) for each milestone.
+- Milestone 1 cannot be scaffold-only; include at least one user-visible path/page/functionality.
+
+## QA Gates: Stack / Defaults / Value (FAIL + ESCALATE)
+
+- QA must pass all three gates: stack compliance, engineering defaults compliance, and milestone value compliance.
+- QA logs FAIL on any gate miss and increments the matching counter in `ai/fail_counters.yaml`.
+- On repeated failure for the same gate key (count reaches 2), QA must ESCALATE to `JUDGE_MEDIATOR`.

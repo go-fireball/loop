@@ -28,6 +28,13 @@
   - `Open Questions (only if truly blocking)`
 - Do not read or edit `ai/plan.md`.
 - Do not set stack decisions.
+- Include in `ai/simplification.md` a `Default Engineering Choices (Guidance)` section with:
+  - Small/simple single deployable apps: prefer Nuxt 4 (UI + backend via Nitro)
+  - Medium/large enterprise backend services: prefer .NET API
+  - Data/analytics heavy workloads: prefer Python
+  - If Node/Nuxt/Vue stack: prefer TypeScript by default
+  - Prefer functional-ish style for core logic (pure functions, immutability at boundaries, isolate side effects)
+  - Note: these are defaults (guidance), and exceptions require Architect lock rationale.
 - Cannot write production code.
 
 5) End-of-turn required steps:

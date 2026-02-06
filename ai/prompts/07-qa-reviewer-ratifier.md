@@ -22,24 +22,34 @@
 - `ai/review.md`
 - `ai/ratify.yaml`
 - `ai/fail_counters.yaml`
+- read-only: `ai/stack_fingerprint.yaml`
 - `ai/iterations/ITER-0001.md`
 - `ai/active_agent.txt`
 - `ai/next_agent.yaml`
 - `ai/next_agent.md`
 
 5) Actions:
+- Run mandatory gates before any PASS verdict:
+  - GATE A: Stack Compliance (use `ai/stack_fingerprint.yaml`)
+    - verify all `stack_fingerprint.must_exist` paths exist
+    - verify required dependencies/markers are present
+  - GATE B: Engineering Defaults Compliance (use `ai/decision-lock.yaml` `engineering_defaults`)
+    - if language is `typescript`, FAIL when new implementation code introduces `.js`/`.mjs` where `.ts` is expected (config files only when explicitly allowed)
+    - if `module_format` is specified, FAIL if conflicting module patterns are introduced
+  - GATE C: Milestone Value Compliance (use `ai/plan.md` acceptance criteria)
+    - FAIL when Milestone 1 is only scaffolding and does not deliver required artifacts/behaviors
 - Run a mandatory STACK COMPLIANCE GATE before final verdict.
 - Read `ai/decision-lock.yaml` and `ai/stack_fingerprint.yaml`, then verify:
   - all paths in `stack_fingerprint.must_exist` exist
   - dependencies listed under `must_include_dependencies.package_json` exist in the target `package.json` (if any)
   - markers listed under `must_include_markers.files_containing_text` are satisfied (if any)
-- If any stack compliance check fails:
+- If any mandatory gate check fails:
   - set verdict FAIL
-  - cite `ai/decision-lock.yaml` stack choice and/or `ai/stack_fingerprint.yaml` contract in findings
+  - cite `ai/decision-lock.yaml`, `ai/stack_fingerprint.yaml`, and/or `ai/plan.md` contract in findings
   - set baton to `DEV_BUILDER` for normal FAIL handling
   - write findings in `ai/review.md`
-  - increment `ai/fail_counters.yaml` for key `<ITER>:stack_compliance` by 1
-  - if `<ITER>:stack_compliance` reaches 2, set verdict ESCALATE, set baton to `JUDGE_MEDIATOR`, add an ESCALATE note to `ai/review.md` and `ai/iterations/ITER-0001.md`, and print exactly: `FINISHED: HANDING TO JUDGE_MEDIATOR`
+  - increment `ai/fail_counters.yaml` counters for keys `<ITER>:stack_compliance`, `<ITER>:engineering_defaults`, or `<ITER>:milestone_value` as applicable
+  - if any same-key counter reaches 2, set verdict ESCALATE, set baton to `JUDGE_MEDIATOR`, add an ESCALATE note to `ai/review.md` and `ai/iterations/ITER-0001.md`, and print exactly: `FINISHED: HANDING TO JUDGE_MEDIATOR`
 - Set verdict PASS, FAIL, or ESCALATE with citations.
 - Update retry counter for same milestone.
 - If failure_count_for_milestone >= 2, must set verdict ESCALATE.

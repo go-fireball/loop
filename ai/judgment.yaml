@@ -44,3 +44,9 @@ definition_of_done:
   - "Plan milestone acceptance criteria met"
   - "Security and Ops checks pass or are explicitly waived by policy"
   - "QA verdict PASS and ratify.yaml ratified true"
+
+engineering_invariants:
+  - "If the chosen stack uses Node/Nuxt/Vue, the implementation language is TypeScript by default; exceptions must be explicitly documented in ai/decision-lock.yaml."
+  - "Core business logic must be implemented as deterministic functions with unit tests."
+  - "UI tests are optional in ITER-0001; prioritize unit tests for core logic."
+  - "No empty scaffold counts as a milestone: each milestone must deliver observable user value per plan acceptance criteria."
