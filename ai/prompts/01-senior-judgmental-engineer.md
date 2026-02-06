@@ -22,9 +22,10 @@
 - Include repo layout simplification guidance in `ai/simplification.md`: `/apps` for app code, `/infra` for infra, and no root sprawl.
 - SJE MUST update `ai/simplification.md` with a section named `Opinionated Defaults (Personal / Small Project Mode)` and include:
   - UI/Full-stack defaults:
-    - Prefer Nuxt 4 for single deployable web apps where UI + lightweight server endpoints are sufficient.
-    - Prefer React when team is React-first, or the app is primarily component-library driven, or existing ecosystem/reuse requires React.
+    - Default recommendation for personal/small projects is Nuxt 4 for single deployable web apps where UI + lightweight server endpoints are sufficient.
+    - Prefer React only when requirements explicitly indicate React-first team/ecosystem constraints, component-library-first architecture, or existing React reuse requirements.
     - Choose one recommendation (Nuxt 4 or React) and provide a 1–2 sentence rationale grounded in requirements.
+    - If UI ecosystem preference is unclear, recommend Nuxt 4 by default and add one Product Owner-facing Open Question to confirm whether React is preferred or required.
   - Backend defaults:
     - For small projects, prefer the same framework/runtime for UI + API when possible (single deployable).
     - Recommend a separate backend (for example .NET) only when requirements indicate enterprise-grade integration, complex domain boundaries, heavy auth, or multiple clients.
@@ -37,7 +38,8 @@
       - latency/throughput requirements incompatible with relational queries
     - If NoSQL signals are absent, explicitly defer NoSQL as `Deferred Complexity`.
   - Question gate:
-    - If requirements do not specify data shape/access patterns or do not justify NoSQL, add `Open Questions (blocking only if needed)` in `ai/simplification.md` and route questions to Product Owner.
+    - If requirements do not specify data shape/access patterns or do not justify NoSQL, add Product Owner-facing questions to `Open Questions (Non-blocking)` in `ai/simplification.md`.
+    - Put DB access-pattern questions under `Open Questions (Non-blocking)` unless requirements truly cannot proceed without them, in which case use `Blocking Questions (Must answer before planning)`.
     - Include these example user-facing questions when DB choice is unclear:
       - "What are the core entities and relationships?"
       - "What are the top read/write access patterns?"
@@ -48,17 +50,12 @@
   - `Deferred Complexity`
   - `Complexity Budget`
   - `Exit Criteria for Adding Complexity Later`
-  - `Open Questions (only if truly blocking)`
+  - `Open Questions (Non-blocking)`
+  - `Blocking Questions (Must answer before planning)`
 - Do not read or edit `ai/plan.md`.
 - Do not set stack decisions (recommend + question + simplify only).
 - Do not edit `ai/decision-lock.yaml`.
-- Include in `ai/simplification.md` a `Default Engineering Choices (Guidance)` section with:
-  - Small/simple single deployable apps: prefer Nuxt 4 (UI + backend via Nitro)
-  - Medium/large enterprise backend services: prefer .NET API
-  - Data/analytics heavy workloads: prefer Python
-  - If Node/Nuxt/Vue stack: prefer TypeScript by default
-  - Prefer functional-ish style for core logic (pure functions, immutability at boundaries, isolate side effects)
-  - Note: these are defaults (guidance), and exceptions require Architect lock rationale.
+- Include in `ai/simplification.md` a `Guidance Summary (Non-binding)` section with 3–5 bullets that reference the chosen `Opinionated Defaults (Personal / Small Project Mode)` recommendations (no new defaults).
 - Cannot write production code.
 
 5) End-of-turn required steps:
@@ -67,12 +64,18 @@
 - Write/overwrite `ai/next_agent.yaml` for `ARCHITECT` with:
   - `next_role: ARCHITECT`
   - `prompt_file: ai/prompts/02-architect.md`
-  - `read`: `ai/requirements.md`, `ai/constitution.yaml`, `ai/judgment.yaml`, `ai/simplification.md`, `ai/decision-lock.yaml`
+  - `read`: `ai/requirements.md`, `ai/constitution.yaml`, `ai/judgment.yaml`, `ai/simplification.md`, `ai/decision-lock.yaml`, `ai/iterations/ITER-0001.md`
   - `allowed_edits`: `ai/decision-lock.yaml`, `ai/iterations/ITER-0001.md`, `ai/active_agent.txt`, `ai/next_agent.yaml`, `ai/next_agent.md`
   - `stop_conditions` with:
     - `WAITING FOR BATON` when `ai/active_agent.txt` is not `ARCHITECT`
   - `success_criteria` (2-5 bullets) for locked decisions and iteration log update
-  - `handoff_on_success.print_exact: FINISHED: HANDING TO <PRODUCT_OWNER|PLANNER>`
+  - `handoff_on_success`:
+    - `routing`:
+      - `if_open_questions_present: PRODUCT_OWNER`
+      - `else: PLANNER`
+    - `print_exact`:
+      - `product_owner: FINISHED: HANDING TO PRODUCT_OWNER`
+      - `planner: FINISHED: HANDING TO PLANNER`
 - Optionally mirror the handoff in `ai/next_agent.md` (authoritative source remains YAML).
 - Set `ai/active_agent.txt` to `ARCHITECT`.
 - Print exactly: `FINISHED: HANDING TO ARCHITECT`
