@@ -19,6 +19,8 @@
 - `ai/schema/schema.sql`
 - `ai/iterations/ITER-0001.md`
 - `ai/active_agent.txt`
+- `ai/next_agent.yaml`
+- `ai/next_agent.md`
 
 5) Actions:
 - Create/update milestone plan (2-5 milestones max).
@@ -32,6 +34,17 @@
 6) End-of-turn required steps:
 - Append one line to `ai/iterations/ITER-0001.md`:
   `Decision: <plan/schema change> | Why: <one sentence>`
+- Write/overwrite `ai/next_agent.yaml` for `DEV_BUILDER` with:
+  - `next_role: DEV_BUILDER`
+  - `prompt_file: ai/prompts/04-dev-builder.md`
+  - `read`: `ai/plan.md`, `ai/schema/schema.sql`, `ai/judgment.yaml`, `ai/review.md`
+  - `allowed_edits`: milestone product code/tests, `ai/iterations/ITER-0001.md`, `ai/active_agent.txt`, `ai/next_agent.yaml`, `ai/next_agent.md`
+  - `stop_conditions` with:
+    - `WAITING FOR BATON` when `ai/active_agent.txt` is not `DEV_BUILDER`
+    - `WAITING FOR USER` when `confirmed_by_user` is not true
+  - `success_criteria` (2-5 bullets) for milestone implementation within lock/plan
+  - `handoff_on_success.print_exact: FINISHED: HANDING TO SECURITY_EXPERT`
+- Optionally mirror the handoff in `ai/next_agent.md` (authoritative source remains YAML).
 - Set `ai/active_agent.txt` to `DEV_BUILDER`.
 - Print exactly: `FINISHED: HANDING TO DEV_BUILDER`
 - Stop.

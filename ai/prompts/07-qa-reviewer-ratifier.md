@@ -21,6 +21,8 @@
 - `ai/ratify.yaml`
 - `ai/iterations/ITER-0001.md`
 - `ai/active_agent.txt`
+- `ai/next_agent.yaml`
+- `ai/next_agent.md`
 
 5) Actions:
 - Set verdict PASS, FAIL, or ESCALATE with citations.
@@ -36,6 +38,15 @@
 7) End-of-turn required steps:
 - Append one line to `ai/iterations/ITER-0001.md`:
   `Decision: <qa verdict> | Why: <one sentence>`
+- Write/overwrite `ai/next_agent.yaml` for selected next role (`PLANNER`, `DEV_BUILDER`, or `JUDGE_MEDIATOR`) with:
+  - correct `prompt_file` for selected role
+  - `read` and `allowed_edits` lists appropriate for selected role (include `ai/next_agent.yaml`, and `ai/next_agent.md` if used)
+  - `stop_conditions` with:
+    - `WAITING FOR BATON` when `ai/active_agent.txt` does not match selected role
+    - `WAITING FOR USER` when selected role requires `confirmed_by_user: true` and it is not true
+  - `success_criteria` (2-5 bullets) appropriate to selected role
+  - `handoff_on_success.print_exact` matching selected role handoff
+- Optionally mirror the handoff in `ai/next_agent.md` (authoritative source remains YAML).
 - Update `ai/active_agent.txt` to selected next role.
 - Print exactly one of:
   - `FINISHED: HANDING TO PLANNER`

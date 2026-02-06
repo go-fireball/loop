@@ -2,6 +2,14 @@
 
 Use this as a copy/paste operational runbook for your first full baton-driven pass.
 
+## Continuous Handoff Mode (no prompt pasting)
+
+- After any agent completes, open `ai/next_agent.yaml`.
+- In the next Codex window, type exactly:
+  `Follow ai/next_agent.yaml exactly.`
+- `ai/next_agent.yaml` is authoritative (optional `ai/next_agent.md` is convenience-only).
+- Baton and user-confirmation gates still apply: enforce `ai/active_agent.txt` checks and `confirmed_by_user` requirements.
+
 ## 1) Prereqs checklist (2 minutes)
 
 - [ ] Repo is clean (`git status` shows no unrelated edits).

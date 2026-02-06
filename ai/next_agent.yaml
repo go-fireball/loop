@@ -1,0 +1,27 @@
+version: 1
+run_id: "ITER-0001"
+current_role_completed: "<ROLE>"
+next_role: "<ROLE>"
+prompt_file: "ai/prompts/<file>.md"
+read:
+  - "ai/active_agent.txt"
+  - "ai/decision-lock.yaml"
+allowed_edits:
+  - "ai/next_agent.yaml"
+  - "ai/next_agent.md"
+  - "ai/active_agent.txt"
+stop_conditions:
+  - name: "WAITING FOR BATON"
+    condition: "If ai/active_agent.txt does not match your role."
+    output_exact: "WAITING FOR BATON"
+  - name: "WAITING FOR USER"
+    condition: "If your role requires confirmed_by_user: true and ai/decision-lock.yaml is not confirmed."
+    output_exact: "WAITING FOR USER"
+success_criteria:
+  - "Complete the role-specific actions in the referenced prompt file."
+  - "Only modify files listed in allowed_edits for that role."
+  - "Append a one-line decision entry to ai/iterations/ITER-0001.md."
+handoff_on_success:
+  set_active_agent_to: "<ROLE>"
+  write_next_agent_yaml: true
+  print_exact: "FINISHED: HANDING TO <ROLE>"
