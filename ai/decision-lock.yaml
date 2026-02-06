@@ -23,6 +23,16 @@ stack:
 
 architecture_shape: "single deployable"
 
+repo_shape:
+  type: monorepo
+  apps_root: "apps/"
+  primary_app_path: "apps/web"
+  infra_root: "infra/"
+  disallowed:
+    - "app_code_at_repo_root"
+    - "infra_at_repo_root"
+  rationale: "Enforces consistent app/infra separation and prevents root-level sprawl for governance."
+
 explicit_disallowed:
   - "No Kubernetes by default"
   - "No event bus by default"

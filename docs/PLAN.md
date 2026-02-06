@@ -22,6 +22,8 @@ Core philosophy:
 - `ai/active_agent.txt`: hard baton; only one role acts at a time.
 - `ai/iterations/ITER-0001.md`: append-only rationale trail for decisions.
 
+Repo layout is an enforced invariant: application code must remain under `/apps` (default `/apps/web`) and infrastructure/container assets must remain under `/infra`, with enforcement defined in `ai/judgment.yaml` and locked defaults in `ai/decision-lock.yaml`.
+
 ## Agent Roles and Responsibilities
 - Product Owner: requirements ownership; user-side confirmations.
 - Senior Judgmental Engineer: simplification authority (80/20 cuts, defer complexity).

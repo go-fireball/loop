@@ -16,6 +16,7 @@
 
 4) Actions:
 - Make explicit 80/20 or 90/10 simplification calls.
+- Include repo layout simplification guidance in `ai/simplification.md`: `/apps` for app code, `/infra` for infra, and no root sprawl.
 - Update `ai/simplification.md` sections:
   - `Simplification Plan`
   - `Deferred Complexity`

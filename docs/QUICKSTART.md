@@ -10,6 +10,15 @@ Use this as a copy/paste operational runbook for your first full baton-driven pa
 - [ ] Required working files exist: `ai/requirements.md`, `ai/simplification.md`, `ai/schema/schema.sql`, `ai/iterations/ITER-0001.md`.
 - [ ] `ai/active_agent.txt` is set to `PRODUCT_OWNER` before starting.
 
+
+## Repo Layout (mandatory)
+
+- Nuxt application code lives at `/apps/web`.
+- Place all application code under `/apps`.
+- Docker/compose/container assets live under `/infra` (for example, `/infra/docker`).
+- Do not create application code at repository root.
+- Do not create infra/docker/container assets at repository root.
+
 ## 2) Starter content for `ai/requirements.md` (paste-ready)
 
 Paste and adjust:
