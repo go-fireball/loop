@@ -2,8 +2,15 @@ version: 1
 mode: mvp
 infra_level: containers-only
 
+repo_invariants:
+  - "All application code must live under /apps"
+  - "No application code allowed at repository root"
+  - "All infrastructure/docker/container assets must live under /infra"
+  - "No infra assets allowed at repository root"
+
 invariants:
   - "Automated tests exist for changed business logic"
+  - "Repository layout follows /apps for app code and /infra for infrastructure assets"
   - "Boundaries are explicit (API, module, or service boundaries)"
   - "Structured logging for key flows and failures"
   - "Configuration via environment/config files, not hardcoded values"

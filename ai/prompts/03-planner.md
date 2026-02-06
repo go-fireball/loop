@@ -22,6 +22,7 @@
 
 5) Actions:
 - Create/update milestone plan (2-5 milestones max).
+- Ensure all planned paths reference `/apps` and `/infra`, and do not plan app/infra work at repository root.
 - Incorporate `Deferred Complexity` from `ai/simplification.md` into `ai/plan.md`.
 - Ensure milestones stay within `Complexity Budget` from `ai/simplification.md`.
 - Define acceptance criteria, tests, risks, invariant mapping.
