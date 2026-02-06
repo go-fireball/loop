@@ -116,6 +116,14 @@ Fix:
 - On `ESCALATE`, baton goes to `JUDGE_MEDIATOR` to split scope, re-lock decisions, or re-plan.
 - After mediation, baton returns to `ARCHITECT`, `PLANNER`, or `DEV_BUILDER` per decision.
 
+
+## Stack Compliance Gate (Stack-Agnostic)
+
+- Architect populates `ai/stack_fingerprint.yaml` based on `ai/decision-lock.yaml`.
+- Planner writes milestone-level artifact-based acceptance criteria aligned to the stack fingerprint.
+- QA enforces the stack fingerprint and fails when required artifacts/dependencies/markers are missing.
+- Repeated stack compliance failure in the same iteration escalates to `JUDGE_MEDIATOR`.
+
 ## 8) ITER-0001 success criteria checklist
 
 - [ ] `ai/requirements.md` is concrete and implementation-ready.

@@ -1,0 +1,17 @@
+version: 1
+project_type: "<to be set by ARCHITECT>"
+expected_stack:
+  frontend: "<to be set>"
+  backend: "<to be set>"
+repo_layout:
+  primary_app_path: "<to be set>"
+must_exist: []
+must_include_dependencies:
+  package_json: []
+  other: []
+must_include_markers:
+  files_containing_text: []
+notes:
+  - "ARCHITECT populates this file based on ai/decision-lock.yaml."
+  - "QA must FAIL if required artifacts/deps/markers are missing."
+  - "This file is a contract; changes require ARCHITECT/ADR-level intent."
