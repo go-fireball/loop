@@ -23,6 +23,13 @@ stack:
 
 architecture_shape: "single deployable"
 
+engineering_defaults:
+  language: "<fill>"
+  module_format: "<fill>"
+  code_style: "<fill>"
+  testing_strategy: "<fill>"
+  rationale: "<fill>"
+
 repo_shape:
   type: monorepo
   apps_root: "apps/"

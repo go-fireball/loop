@@ -20,10 +20,15 @@
 
 4) Actions:
 - Set or refine major technical decisions in `ai/decision-lock.yaml`.
+- Architect MUST lock engineering defaults in `ai/decision-lock.yaml` with rationale:
+  - `engineering_defaults.language`: `typescript` or `other`
+  - `engineering_defaults.module_format`: `esm` or `cjs`
+  - `engineering_defaults.code_style`: `functional_core_imperative_shell` guidance
+  - `engineering_defaults.testing_strategy`: focus on unit tests for core logic; UI tests optional in ITER-0001
+  - `repo_shape` must be explicit and treated as a non-optional locked decision
 - Ensure `ai/stack_fingerprint.yaml` exists and reflects the locked stack decisions.
 - Architect MUST populate `ai/stack_fingerprint.yaml` to match the locked stack in `ai/decision-lock.yaml`.
 - Architect MUST define `must_exist` and `must_include_dependencies` in `ai/stack_fingerprint.yaml` appropriate to the chosen stack.
-- Explicitly lock repository layout in `ai/decision-lock.yaml` via `repo_shape` and treat it as a non-optional locked decision.
 - Consider simplification constraints from `ai/simplification.md` when producing `ai/decision-lock.yaml`.
 - Keep `architecture_shape` biased to `single deployable` unless justified.
 - If architecture-changing questions remain, keep `confirmed_by_user: false` and list questions clearly.

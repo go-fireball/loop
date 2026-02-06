@@ -29,8 +29,10 @@
 - Incorporate `Deferred Complexity` from `ai/simplification.md` into `ai/plan.md`.
 - Ensure milestones stay within `Complexity Budget` from `ai/simplification.md`.
 - Define acceptance criteria, tests, risks, invariant mapping.
-- For each milestone in `ai/plan.md`, include an `Acceptance Criteria (Artifacts)` section with required files that must exist, required dependencies/markers that must be present, and command(s) to run tests/build (if applicable).
+- For each milestone in `ai/plan.md`, include both `Acceptance Criteria (Artifacts)` and `Acceptance Criteria (Behavior)` sections.
+- In `Acceptance Criteria (Artifacts)`, include required files that must exist, required dependencies/markers that must be present, and command(s) to run tests/build (if applicable).
 - Read `ai/stack_fingerprint.yaml` and ensure milestone acceptance criteria align with it.
+- Explicitly forbid an empty scaffold milestone: Milestone 1 must include at least one end-user visible path/page/functionality (even minimal).
 - Define schema changes explicitly in `ai/schema/schema.sql`.
 - Do not change `ai/decision-lock.yaml`.
 

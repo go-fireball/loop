@@ -21,6 +21,18 @@
 - If Architect has provided open questions and user answered them, update answers and set `confirmed_by_user: true` when policy allows.
 - Do not change stack/architecture fields unless explicitly acting on answered Architect questions.
 
+### Questions Gate (required)
+- PRODUCT_OWNER MUST ensure `ai/requirements.md` includes answers for:
+  - Q1: What is the minimum lovable feature set for Milestone 1? (3–6 bullets)
+  - Q2: What is explicitly NOT required for Milestone 1? (3–6 bullets)
+  - Q3: What does “working” mean for Milestone 1? (observable behaviors)
+  - Q4: What sample content/data must exist on day 1? (e.g., “at least 3 posts”)
+  - Q5: Preferred language/conventions? (TypeScript vs JS, etc.) if relevant
+- If any answer is missing, PRODUCT_OWNER must:
+  - add missing items to `ai/requirements.md` under `Open Questions`
+  - keep decision-lock confirmation false (do not flip `confirmed_by_user`)
+  - set baton to `ARCHITECT` or keep baton at `PRODUCT_OWNER` per flow, but MUST NOT proceed as if answers were provided
+
 5) End-of-turn required steps:
 - Append one line to `ai/iterations/ITER-0001.md`:
   `Decision: <what changed> | Why: <one sentence>`
