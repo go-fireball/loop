@@ -20,3 +20,10 @@
 
 ## Open Questions (only if truly blocking)
 - Include only unresolved questions that block progress now.
+
+
+## Opinionated Defaults (Personal / Small Project Mode)
+- Placeholder for SJE recommendations on UI/full-stack, backend shape, and database defaults.
+
+## Deviation Questions (when defaults don’t fit)
+- Placeholder for Product Owner-facing questions needed before deviating from defaults.

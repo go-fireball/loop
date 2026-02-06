@@ -23,6 +23,10 @@ stack:
 
 architecture_shape: "single deployable"
 
+recommendations:
+  sje_stack_recommendation: "<fill>"
+  sje_db_recommendation: "<fill>"
+
 engineering_defaults:
   language: "<fill>"
   module_format: "<fill>"

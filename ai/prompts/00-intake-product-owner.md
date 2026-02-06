@@ -19,6 +19,7 @@
 4) Actions:
 - Fill/update `ai/requirements.md` from user input.
 - If Architect has provided open questions and user answered them, update answers and set `confirmed_by_user: true` when policy allows.
+- If SENIOR_JUDGMENTAL_ENGINEER added questions in `ai/simplification.md` (or flagged missing requirement details), PRODUCT_OWNER MUST copy those questions into `ai/requirements.md` under `Open Questions` and keep `confirmed_by_user: false` until answered.
 - Do not change stack/architecture fields unless explicitly acting on answered Architect questions.
 
 ### Questions Gate (required)
