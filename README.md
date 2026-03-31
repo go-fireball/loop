@@ -94,14 +94,14 @@ When a role outputs `WAITING FOR USER`:
 
 - `./scripts/bootstrap.sh [ROLE]` — seeds `ai/` from `ai/defaults/`, creates baton files.
 - `./scripts/check-baton.sh` — validates required files, role values, and baton schema.
-- `./scripts/generate-next-agent.sh <ROLE> [--notes ...] [--return-to ...] [--escalated-by ...] [--escalation-reason ...]` — writes `ai/next_agent.yaml` with only the canonical schema fields.
+- `./scripts/generate-next-agent.sh <ROLE> [--notes ...] [--return-to ...] [--escalated-by ...] [--escalation-reason ...]` — writes `ai/next_agent.yaml` using the Baton contract schema above.
 - `./scripts/resume-baton.sh [--force]` — marks human answers ready.
 - `./scripts/run-baton.sh --executor <codex|claude|copilot>` — main baton runner.
 - `./scripts/validate_baton.py` — YAML structure validator.
 
 ## Legacy prompt handling
 
-Legacy active-role prompts are not part of the active flow and are not retained as active prompt mappings. The active prompt set is:
+Legacy active-role prompts are not part of the active flow and are not retained in `ai/defaults/prompts/`. The active prompt set is:
 
 - `ai/defaults/prompts/00-planner.md`
 - `ai/defaults/prompts/01-senior-judgmental-engineer.md`
