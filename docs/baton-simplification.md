@@ -28,7 +28,7 @@ Make baton handling deterministic by separating **state** from **behavior**.
 - `ai/next_agent.md`
   - Optional narrative handoff context only.
 - `scripts/generate-next-agent.sh`
-  - Generates minimal `ai/next_agent.yaml` only.
+  - Generates `ai/next_agent.yaml` with only canonical baton keys (`next_role`, optional `handoff_notes`, `return_to`, `escalated_by`, `escalation_reason`).
 - `scripts/check-baton.sh`
   - Validates active role and minimal baton schema; does not validate prompt behavior from YAML.
 - `scripts/run-baton.sh`

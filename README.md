@@ -9,7 +9,9 @@ A lightweight, file-based baton loop for AI-assisted software delivery. Loop is 
 - Keep execution depth in the chosen model, not in framework machinery.
 - Use HUMAN selectively for unresolved business/context decisions.
 
-## Active roles (canonical)
+## Canonical role model
+
+Active roles:
 
 - `PLANNER`
 - `SENIOR_JUDGMENTAL_ENGINEER`
@@ -28,7 +30,7 @@ Default happy path:
 Authoritative state:
 
 - `ai/active_agent.txt` — current role (source of truth)
-- `ai/next_agent.yaml` — minimal baton metadata
+- `ai/next_agent.yaml` — baton metadata for next handoff
 
 `ai/next_agent.yaml` schema:
 
@@ -57,7 +59,7 @@ Preferred escalation paths:
 
 Direct `ENGINEER -> HUMAN` and `VALIDATOR -> HUMAN` are blocked by runner validation; escalate through `SENIOR_JUDGMENTAL_ENGINEER` or `PLANNER`.
 
-## Quick start
+## Setup
 
 ### New project
 
@@ -83,7 +85,7 @@ chmod +x init.sh
 When a role outputs `WAITING FOR USER`:
 
 1. Runner sets `ai/active_agent.txt` to `HUMAN`.
-2. Runner writes `ai/next_agent.yaml` with `next_role: HUMAN` and `return_to: <role>`.
+2. Runner writes `ai/next_agent.yaml` with `next_role: HUMAN`, `return_to`, and escalation metadata.
 3. Human answers `ai/user-questions.yaml`.
 4. Human runs `./scripts/resume-baton.sh`.
 5. Next `run-baton.sh` resumes to `return_to`.
@@ -92,10 +94,20 @@ When a role outputs `WAITING FOR USER`:
 
 - `./scripts/bootstrap.sh [ROLE]` — seeds `ai/` from `ai/defaults/`, creates baton files.
 - `./scripts/check-baton.sh` — validates required files, role values, and baton schema.
-- `./scripts/generate-next-agent.sh <ROLE> [--notes ...] [--return-to ...] [--escalated-by ...] [--escalation-reason ...]` — writes minimal baton metadata.
+- `./scripts/generate-next-agent.sh <ROLE> [--notes ...] [--return-to ...] [--escalated-by ...] [--escalation-reason ...]` — writes `ai/next_agent.yaml` with only the canonical schema fields.
 - `./scripts/resume-baton.sh [--force]` — marks human answers ready.
 - `./scripts/run-baton.sh --executor <codex|claude|copilot>` — main baton runner.
 - `./scripts/validate_baton.py` — YAML structure validator.
+
+## Legacy prompt handling
+
+Legacy active-role prompts are not part of the active flow and are not retained as active prompt mappings. The active prompt set is:
+
+- `ai/defaults/prompts/00-planner.md`
+- `ai/defaults/prompts/01-senior-judgmental-engineer.md`
+- `ai/defaults/prompts/02-engineer.md`
+- `ai/defaults/prompts/03-validator.md`
+- `ai/defaults/prompts/human.md`
 
 ## Migration note
 
