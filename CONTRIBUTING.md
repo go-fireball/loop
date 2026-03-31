@@ -8,7 +8,7 @@
 
 ## Local workflow
 1. `./scripts/check-baton.sh`
-2. Execute current role by following `ai/next_agent.yaml`.
+2. Execute current role from `ai/active_agent.txt` via `./scripts/run-baton.sh --executor <codex|claude|copilot>`.
 3. Append iteration decision line.
 4. Update baton handoff files.
 

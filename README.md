@@ -10,59 +10,60 @@ Loop is intentionally small and file-driven:
 - explicit baton ownership via files under `ai/`
 - executor-agnostic runner contract
 
-## Core contract
+## Canonical contract
 
-1. `ai/active_agent.txt` is the authoritative current role.
-2. `scripts/run-baton.sh` resolves role → prompt from a static mapping.
-3. `ai/next_agent.yaml` is minimal baton metadata with one required key and four optional keys:
-   - required: `next_role`
-   - optional: `handoff_notes`, `return_to` (only when `next_role: HUMAN`), `escalated_by`, `escalation_reason`
-4. Agents must end with exactly one terminal line:
-   - `FINISHED: HANDING TO <ROLE>`
-   - `WAITING FOR USER`
-   - `WAITING FOR BATON`
+### 1) Active roles
 
-## Role model (active flow)
-
-First-class roles:
+The active role set is:
 - `PLANNER`
 - `SENIOR_JUDGMENTAL_ENGINEER`
 - `ENGINEER`
 - `VALIDATOR`
 - `HUMAN`
 
+### 2) Default flow
+
 Default happy path:
 
 `PLANNER -> SENIOR_JUDGMENTAL_ENGINEER -> ENGINEER -> VALIDATOR`
 
-## Escalation-first baton behavior
+`HUMAN` is escalation-only and is not part of the default happy path.
 
-Loop is event-driven, not checkpoint-heavy.
+### 3) Baton files and schema
 
-Allowed escalation patterns:
-- `ENGINEER -> SENIOR_JUDGMENTAL_ENGINEER`
-- `VALIDATOR -> SENIOR_JUDGMENTAL_ENGINEER`
-- `ENGINEER -> PLANNER` (scope/decomposition mismatch)
-- `VALIDATOR -> PLANNER` (acceptance/scope ambiguity)
-- `SENIOR_JUDGMENTAL_ENGINEER -> HUMAN`
-- `PLANNER -> HUMAN`
+- `ai/active_agent.txt` is the authoritative current role.
+- `scripts/run-baton.sh` resolves role → prompt from a static mapping.
+- `ai/next_agent.yaml` is baton metadata only (never prompt-routing config).
 
-`ENGINEER`/`VALIDATOR` should usually escalate through `SENIOR_JUDGMENTAL_ENGINEER` or `PLANNER` rather than directly to `HUMAN`.
+`ai/next_agent.yaml` schema:
+- required:
+  - `next_role`
+- optional:
+  - `handoff_notes`
+  - `return_to` (allowed only when `next_role: HUMAN`; must be a non-`HUMAN` role)
+  - `escalated_by`
+  - `escalation_reason`
 
-## HUMAN involvement policy
+### 4) Terminal line contract
 
-`HUMAN` is selective escalation authority, not a mandatory step after each role.
+Agents must end with exactly one terminal line:
+- `FINISHED: HANDING TO <ROLE>`
+- `WAITING FOR USER`
+- `WAITING FOR BATON`
 
-Use `HUMAN` when:
-- unresolved ambiguity needs business/context input
-- role-level conflict cannot be resolved safely
-- validator failure requires tradeoff/override
+### 5) HUMAN escalation and resume
 
-Resume behavior:
-- Runner pauses on `WAITING FOR USER` and sets active role to `HUMAN`.
-- Human answers `ai/user-questions.yaml`.
-- Human runs `./scripts/resume-baton.sh`.
-- Next runner invocation resumes to `return_to` in `ai/next_agent.yaml`.
+Use `HUMAN` only for selective escalation, such as:
+- unresolved ambiguity requiring business/context input
+- role-level conflict not safely resolvable in-role
+- validator failure needing explicit tradeoff/override
+
+Escalation/resume behavior:
+1. Escalating role writes `next_role: HUMAN` and includes `return_to` in `ai/next_agent.yaml`.
+2. Runner pauses when terminal output is `WAITING FOR USER` and sets active role to `HUMAN`.
+3. Human answers `ai/user-questions.yaml`.
+4. Human runs `./scripts/resume-baton.sh`.
+5. Next runner invocation resumes to `return_to`.
 
 ## Quick start (new project)
 
@@ -76,9 +77,11 @@ chmod +x init.sh
 
 ## Start the loop (existing checkout)
 
-1. Bootstrap state:
+1. Bootstrap state (defaults to `PLANNER` if omitted):
    ```bash
-   ./scripts/bootstrap.sh PLANNER
+   ./scripts/bootstrap.sh
+   # or
+   ./scripts/bootstrap.sh ENGINEER
    ```
 2. Update `ai/goal.yaml` for your project.
 3. Validate baton state:
@@ -92,10 +95,10 @@ chmod +x init.sh
 
 ## CLI reference
 
-- `./scripts/bootstrap.sh [ROLE]` — seed `ai/` from `ai/defaults/` and initialize baton files.
-- `./scripts/check-baton.sh` — validate files, role validity, and `ai/next_agent.yaml` schema (including optional escalation keys).
-- `./scripts/generate-next-agent.sh <ROLE> [--notes ...] [--return-to ...] [--escalated-by ...] [--escalation-reason ...]` — write baton metadata with the same schema documented above.
-- `./scripts/resume-baton.sh [--force]` — mark HUMAN answers ready for runner resume.
+- `./scripts/bootstrap.sh [ROLE]` — seed `ai/` from `ai/defaults/`, initialize baton files, and set starting role (`PLANNER` default).
+- `./scripts/check-baton.sh` — validate files, role validity, and `ai/next_agent.yaml` schema.
+- `./scripts/generate-next-agent.sh <ROLE> [--notes ...] [--return-to ...] [--escalated-by ...] [--escalation-reason ...]` — write `ai/next_agent.yaml` using the canonical schema above.
+- `./scripts/resume-baton.sh [--force]` — mark HUMAN answers ready for runner resume to `return_to`.
 - `./scripts/validate_baton.py` — YAML schema helper used by checks.
 - Dependency note: YAML schema validation uses `PyYAML` (`python3 -m pip install pyyaml`).
 
