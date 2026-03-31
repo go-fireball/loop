@@ -5,9 +5,8 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
 errors=0
-valid_roles="PRODUCT_OWNER SENIOR_JUDGMENTAL_ENGINEER ARCHITECT PLANNER DEV VALIDATOR REVIEWER HUMAN"
+valid_roles="PLANNER SENIOR_JUDGMENTAL_ENGINEER ENGINEER VALIDATOR HUMAN"
 
-# ── 1. Check required files exist ──
 required_files=(
   "ai/active_agent.txt"
   "ai/goal.yaml"
@@ -31,7 +30,6 @@ for file in "${required_files[@]}"; do
   fi
 done
 
-# ── 2. Validate active agent ──
 echo ""
 echo "=== Active agent ==="
 
@@ -56,7 +54,6 @@ else
   fi
 fi
 
-# ── 3. Validate core YAML structure using Python helper ──
 echo ""
 echo "=== YAML validation ==="
 
@@ -74,11 +71,20 @@ if ! command -v python3 >/dev/null 2>&1; then
   echo "  WARN: python3 not found, skipping YAML structure validation"
 else
   for yf in "${yaml_files[@]}"; do
-    if [[ ! -f "$yf" ]]; then
-      continue
-    fi
-    result="$(python3 "$ROOT/scripts/validate_baton.py" "$yf" 2>&1)" || true
-    if echo "$result" | grep -q "^FAIL"; then
+    [[ -f "$yf" ]] || continue
+    set +e
+    result="$(python3 "$ROOT/scripts/validate_baton.py" "$yf" 2>&1)"
+    rc=$?
+    set -e
+    if [[ $rc -ne 0 ]]; then
+      if echo "$result" | grep -q "ModuleNotFoundError: No module named 'yaml'"; then
+        echo "  WARN: $yf skipped (PyYAML not installed)"
+      else
+        echo "  FAIL: $yf validation failed"
+        echo "  $result"
+        errors=$((errors + 1))
+      fi
+    elif echo "$result" | grep -q "^FAIL"; then
       echo "  $result"
       errors=$((errors + 1))
     else
@@ -87,17 +93,29 @@ else
   done
 fi
 
-# ── 4. Validate minimal next_agent.yaml (if present) ──
 echo ""
 echo "=== next_agent.yaml (optional minimal baton) ==="
 
 if [[ -f ai/next_agent.yaml ]]; then
   if command -v python3 >/dev/null 2>&1; then
-    result="$(python3 "$ROOT/scripts/validate_baton.py" ai/next_agent.yaml 2>&1)" || true
+    set +e
+    result="$(python3 "$ROOT/scripts/validate_baton.py" ai/next_agent.yaml 2>&1)"
+    rc=$?
+    set -e
   else
     result="WARN: python3 not found, skipping next_agent schema validation"
+    rc=0
   fi
-  if echo "$result" | grep -q "^FAIL"; then
+
+  if [[ $rc -ne 0 ]]; then
+    if echo "$result" | grep -q "ModuleNotFoundError: No module named 'yaml'"; then
+      echo "  WARN: ai/next_agent.yaml skipped (PyYAML not installed)"
+    else
+      echo "  FAIL: ai/next_agent.yaml validation failed"
+      echo "  $result"
+      errors=$((errors + 1))
+    fi
+  elif echo "$result" | grep -q "^FAIL"; then
     echo "  $result"
     errors=$((errors + 1))
   else
@@ -111,10 +129,7 @@ if [[ -f ai/next_agent.yaml ]]; then
   else
     found=0
     for role in $valid_roles; do
-      if [[ "$next_role" == "$role" ]]; then
-        found=1
-        break
-      fi
+      [[ "$next_role" == "$role" ]] && found=1 && break
     done
     if [[ $found -eq 0 ]]; then
       echo "  FAIL: ai/next_agent.yaml next_role '$next_role' is invalid"
@@ -126,30 +141,35 @@ if [[ -f ai/next_agent.yaml ]]; then
 
   return_to="$(sed -n 's/^return_to:[[:space:]]*//p' ai/next_agent.yaml | head -1 | tr -d '[:space:]')"
   if [[ -n "$return_to" ]]; then
-    if [[ "$next_role" != "HUMAN" ]]; then
-      echo "  FAIL: return_to is only allowed when next_role is HUMAN"
+    found=0
+    for role in $valid_roles; do
+      [[ "$return_to" == "$role" ]] && found=1 && break
+    done
+    if [[ $found -eq 0 || "$return_to" == "HUMAN" ]]; then
+      echo "  FAIL: return_to '$return_to' must be a non-HUMAN valid role"
       errors=$((errors + 1))
     else
-      found=0
-      for role in $valid_roles; do
-        if [[ "$return_to" == "$role" ]]; then
-          found=1
-          break
-        fi
-      done
-      if [[ $found -eq 0 || "$return_to" == "HUMAN" ]]; then
-        echo "  FAIL: return_to '$return_to' must be a non-HUMAN valid role"
-        errors=$((errors + 1))
-      else
-        echo "  OK:   return_to is $return_to"
-      fi
+      echo "  OK:   return_to is $return_to"
+    fi
+  fi
+
+  escalated_by="$(sed -n 's/^escalated_by:[[:space:]]*//p' ai/next_agent.yaml | head -1 | tr -d '[:space:]')"
+  if [[ -n "$escalated_by" ]]; then
+    found=0
+    for role in $valid_roles; do
+      [[ "$escalated_by" == "$role" ]] && found=1 && break
+    done
+    if [[ $found -eq 0 ]]; then
+      echo "  FAIL: escalated_by '$escalated_by' must be a valid role"
+      errors=$((errors + 1))
+    else
+      echo "  OK:   escalated_by is $escalated_by"
     fi
   fi
 else
   echo "  OK:   ai/next_agent.yaml not present (runner can proceed from active_agent only)"
 fi
 
-# ── Summary ──
 echo ""
 if [[ $errors -ne 0 ]]; then
   echo "Baton check FAILED ($errors error(s))"

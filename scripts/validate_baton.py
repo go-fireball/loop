@@ -15,6 +15,23 @@ REQUIRED_KEYS = {
     "ai/next_agent.yaml": ["next_role"],
 }
 
+NEXT_AGENT_ALLOWED_KEYS = {
+    "next_role",
+    "handoff_notes",
+    "return_to",
+    "escalated_by",
+    "escalation_reason",
+}
+
+
+VALID_ROLES = {
+    "PLANNER",
+    "SENIOR_JUDGMENTAL_ENGINEER",
+    "ENGINEER",
+    "VALIDATOR",
+    "HUMAN",
+}
+
 
 def validate(filepath):
     for suffix in REQUIRED_KEYS:
@@ -44,6 +61,31 @@ def validate(filepath):
     if missing:
         print(f"FAIL: {filepath} - missing required keys: {', '.join(missing)}")
         return False
+
+    if key == "ai/next_agent.yaml":
+        extra = sorted(set(data.keys()) - NEXT_AGENT_ALLOWED_KEYS)
+        if extra:
+            print(f"FAIL: {filepath} - unsupported keys: {', '.join(extra)}")
+            return False
+
+        next_role = data.get("next_role")
+        if next_role not in VALID_ROLES:
+            print(f"FAIL: {filepath} - next_role must be one of: {', '.join(sorted(VALID_ROLES))}")
+            return False
+
+        return_to = data.get("return_to")
+        if return_to is not None and (return_to not in VALID_ROLES or return_to == "HUMAN"):
+            print("FAIL: ai/next_agent.yaml - return_to must be a non-HUMAN valid role")
+            return False
+
+        escalated_by = data.get("escalated_by")
+        if escalated_by is not None and escalated_by not in VALID_ROLES:
+            print("FAIL: ai/next_agent.yaml - escalated_by must be a valid role")
+            return False
+
+        if "escalation_reason" in data and "escalated_by" not in data:
+            print("FAIL: ai/next_agent.yaml - escalation_reason requires escalated_by")
+            return False
 
     print(f"OK:   {filepath}")
     return True

@@ -25,19 +25,15 @@
 - `ai/iterations/ITER-0001.md`
 
 ## 4) Required actions
-- If `ai/user-questions.yaml` has `status: answered`, copy decisions to `ai/decision-lock.yaml` under `approved_decisions` and reset `ai/user-questions.yaml` to `status: none`.
-- Select/refine next item and keep backlog statuses accurate.
-- Split oversized items into smaller deliverables.
-- Set `owner_role` on active item for execution baton.
-- If blocked by requirement ambiguity:
+- Clarify scope, choose/decompose the active item, and keep backlog states accurate.
+- Resolve escalations from ENGINEER/VALIDATOR when planning clarity is sufficient.
+- Escalate to HUMAN only when unresolved ambiguity, conflicting constraints, or missing business context remains:
   - Write questions to `ai/user-questions.yaml` with `status: waiting` and `return_to_role: PLANNER`.
-  - Optionally write `ai/next_agent.md` with ambiguity context.
-  - Do NOT modify `ai/active_agent.txt` or `ai/next_agent.yaml`; runner owns baton transitions.
   - Output exactly `WAITING FOR USER` and stop.
 
 ## 5) End-of-turn required steps
 - Append iteration log line.
-- Write `ai/next_agent.md` with detailed handoff notes for the next role.
-- Print exact message:
-`FINISHED: HANDING TO DEV`
+- Write `ai/next_agent.md` with concise handoff notes.
+- Default happy-path handoff:
+`FINISHED: HANDING TO SENIOR_JUDGMENTAL_ENGINEER`
 - Stop.
