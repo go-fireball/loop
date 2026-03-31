@@ -111,11 +111,4 @@ Legacy active-role prompts are not part of the active flow and are not retained 
 
 ## Migration note
 
-Legacy active roles were retired from the main flow: `PRODUCT_OWNER`, `ARCHITECT`, `DEV`, `REVIEWER`.
-
-- Renamed: `DEV -> ENGINEER`
-- New default flow: `PLANNER -> SENIOR_JUDGMENTAL_ENGINEER -> ENGINEER -> VALIDATOR`
-- Escalation behavior: ENGINEER/VALIDATOR escalate to PLANNER or SENIOR_JUDGMENTAL_ENGINEER; PLANNER/SENIOR_JUDGMENTAL_ENGINEER may escalate to HUMAN when unresolved ambiguity or business-context gaps remain.
-- HUMAN policy: first-class, selective escalation authority only.
-
-See `docs/migration-legacy-roles.md` for details.
+For legacy-role migration details (retired roles, rename, escalation policy), see `docs/migration-legacy-roles.md`.
