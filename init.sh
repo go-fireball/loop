@@ -2,7 +2,7 @@
 set -euo pipefail
 
 REPO_URL="https://github.com/go-fireball/loop.git"
-START_ROLE="${1:-PRODUCT_OWNER}"
+START_ROLE="${1:-PLANNER}"
 TMPDIR="$(mktemp -d)"
 
 cleanup() { rm -rf "$TMPDIR"; }

@@ -1,4 +1,6 @@
 next_role: <ROLE>
 handoff_notes: |
   <short baton context>
-return_to: <ROLE>  # only when next_role is HUMAN
+return_to: <ROLE>               # optional; only when next_role is HUMAN
+escalated_by: <ROLE>            # optional
+escalation_reason: <one line>   # optional
