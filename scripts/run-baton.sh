@@ -57,17 +57,14 @@ if [[ -z "$MODEL" ]]; then
   esac
 fi
 
-valid_roles="PRODUCT_OWNER SENIOR_JUDGMENTAL_ENGINEER ARCHITECT PLANNER DEV VALIDATOR REVIEWER HUMAN"
+valid_roles="PLANNER SENIOR_JUDGMENTAL_ENGINEER ENGINEER VALIDATOR HUMAN"
 
 resolve_prompt_file() {
   case "$1" in
-    PRODUCT_OWNER) echo "ai/prompts/00-product-owner.md" ;;
-    SENIOR_JUDGMENTAL_ENGINEER) echo "ai/prompts/01-senior-judgmental-engineer.md" ;;
-    ARCHITECT) echo "ai/prompts/02-architect.md" ;;
     PLANNER) echo "ai/prompts/03-planner.md" ;;
-    DEV) echo "ai/prompts/04-dev.md" ;;
+    SENIOR_JUDGMENTAL_ENGINEER) echo "ai/prompts/01-senior-judgmental-engineer.md" ;;
+    ENGINEER) echo "ai/prompts/04-engineer.md" ;;
     VALIDATOR) echo "ai/prompts/05-validator.md" ;;
-    REVIEWER) echo "ai/prompts/06-reviewer.md" ;;
     HUMAN) echo "ai/prompts/human.md" ;;
     *) return 1 ;;
   esac
@@ -254,7 +251,7 @@ Strict terminal contract (must output exactly one when ending):
   fi
 
   if printf '%s\n' "$recent_nonempty_lines" | grep -Fxq "WAITING FOR USER"; then
-    ./scripts/generate-next-agent.sh HUMAN --return-to "$current_role" --notes "Blocked on user input from $current_role"
+    ./scripts/generate-next-agent.sh HUMAN --return-to "$current_role" --notes "Escalation to HUMAN from $current_role" --escalated-by "$current_role" --escalation-reason "Role requires human clarification, tradeoff decision, or missing context"
     printf '%s\n' "HUMAN" > ai/active_agent.txt
     echo "[$end_ts] STEP $step END role=$current_role result=WAITING_FOR_USER" | tee -a ai/logs/baton.log
     commit_step "$step" "$current_role (waiting for user)"

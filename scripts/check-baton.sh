@@ -5,7 +5,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
 errors=0
-valid_roles="PRODUCT_OWNER SENIOR_JUDGMENTAL_ENGINEER ARCHITECT PLANNER DEV VALIDATOR REVIEWER HUMAN"
+valid_roles="PLANNER SENIOR_JUDGMENTAL_ENGINEER ENGINEER VALIDATOR HUMAN"
 
 # ── 1. Check required files exist ──
 required_files=(
@@ -144,6 +144,28 @@ if [[ -f ai/next_agent.yaml ]]; then
         echo "  OK:   return_to is $return_to"
       fi
     fi
+  fi
+
+  escalated_by="$(sed -n 's/^escalated_by:[[:space:]]*//p' ai/next_agent.yaml | head -1 | tr -d '[:space:]')"
+  if [[ -n "$escalated_by" ]]; then
+    found=0
+    for role in $valid_roles; do
+      if [[ "$escalated_by" == "$role" ]]; then
+        found=1
+        break
+      fi
+    done
+    if [[ $found -eq 0 ]]; then
+      echo "  FAIL: escalated_by '$escalated_by' is invalid"
+      errors=$((errors + 1))
+    else
+      echo "  OK:   escalated_by is $escalated_by"
+    fi
+  fi
+
+  escalation_reason="$(sed -n 's/^escalation_reason:[[:space:]]*//p' ai/next_agent.yaml | head -1)"
+  if [[ -n "$escalation_reason" ]]; then
+    echo "  OK:   escalation_reason is present"
   fi
 else
   echo "  OK:   ai/next_agent.yaml not present (runner can proceed from active_agent only)"

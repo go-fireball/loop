@@ -2,7 +2,7 @@
 
 ## Objective
 
-<!-- PRODUCT_OWNER: replace this with requirements derived from ai/goal.yaml -->
+<!-- PLANNER: replace this with requirements derived from ai/goal.yaml -->
 <describe the product objective from the project goal>
 
 ## In Scope
