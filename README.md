@@ -10,7 +10,7 @@ Loop is intentionally small and file-driven:
 - explicit baton ownership via files under `ai/`
 - executor-agnostic runner contract
 
-## Canonical contract
+## Canonical contract (single source of truth)
 
 ### 1) Active roles
 
@@ -29,13 +29,13 @@ Default happy path:
 
 `HUMAN` is escalation-only and is not part of the default happy path.
 
-### 3) Baton files and schema
+### 3) Baton files and canonical schema
 
 - `ai/active_agent.txt` is the authoritative current role.
 - `scripts/run-baton.sh` resolves role → prompt from a static mapping.
 - `ai/next_agent.yaml` is baton metadata only (never prompt-routing config).
 
-`ai/next_agent.yaml` schema:
+`ai/next_agent.yaml` schema (canonical):
 - required:
   - `next_role`
 - optional:
@@ -58,7 +58,7 @@ Use `HUMAN` only for selective escalation, such as:
 - role-level conflict not safely resolvable in-role
 - validator failure needing explicit tradeoff/override
 
-Escalation/resume behavior:
+Escalation/resume behavior (canonical):
 1. Escalating role writes `next_role: HUMAN` and includes `return_to` in `ai/next_agent.yaml`.
 2. Runner pauses when terminal output is `WAITING FOR USER` and sets active role to `HUMAN`.
 3. Human answers `ai/user-questions.yaml`.
@@ -71,8 +71,8 @@ Escalation/resume behavior:
 curl -sO https://raw.githubusercontent.com/go-fireball/loop/main/init.sh
 chmod +x init.sh
 ./init.sh            # defaults to PLANNER
-# or
-./init.sh ENGINEER   # start from a different role
+# optional explicit start role
+./init.sh ENGINEER
 ```
 
 ## Start the loop (existing checkout)
@@ -80,7 +80,7 @@ chmod +x init.sh
 1. Bootstrap state (defaults to `PLANNER` if omitted):
    ```bash
    ./scripts/bootstrap.sh
-   # or
+   # optional explicit start role
    ./scripts/bootstrap.sh ENGINEER
    ```
 2. Update `ai/goal.yaml` for your project.
@@ -96,8 +96,8 @@ chmod +x init.sh
 ## CLI reference
 
 - `./scripts/bootstrap.sh [ROLE]` — seed `ai/` from `ai/defaults/`, initialize baton files, and set starting role (`PLANNER` default).
-- `./scripts/check-baton.sh` — validate files, role validity, and `ai/next_agent.yaml` schema.
-- `./scripts/generate-next-agent.sh <ROLE> [--notes ...] [--return-to ...] [--escalated-by ...] [--escalation-reason ...]` — write `ai/next_agent.yaml` using the canonical schema above.
+- `./scripts/check-baton.sh` — validate files, role validity, and the canonical `ai/next_agent.yaml` schema.
+- `./scripts/generate-next-agent.sh <ROLE> [--notes ...] [--return-to ...] [--escalated-by ...] [--escalation-reason ...]` — write canonical baton metadata to `ai/next_agent.yaml`.
 - `./scripts/resume-baton.sh [--force]` — mark HUMAN answers ready for runner resume to `return_to`.
 - `./scripts/validate_baton.py` — YAML schema helper used by checks.
 - Dependency note: YAML schema validation uses `PyYAML` (`python3 -m pip install pyyaml`).
