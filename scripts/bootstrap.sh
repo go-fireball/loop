@@ -4,7 +4,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
-start_role="${1:-PRODUCT_OWNER}"
+start_role="${1:-PLANNER}"
 DEFAULTS_DIR="ai/defaults"
 
 if [[ ! -d "$DEFAULTS_DIR" ]]; then
@@ -12,7 +12,7 @@ if [[ ! -d "$DEFAULTS_DIR" ]]; then
   exit 1
 fi
 
-valid_roles="PRODUCT_OWNER SENIOR_JUDGMENTAL_ENGINEER ARCHITECT PLANNER DEV VALIDATOR REVIEWER HUMAN"
+valid_roles="PLANNER SENIOR_JUDGMENTAL_ENGINEER ENGINEER VALIDATOR HUMAN"
 found=0
 for role in $valid_roles; do
   [[ "$role" == "$start_role" ]] && found=1
