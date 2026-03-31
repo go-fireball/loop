@@ -97,6 +97,7 @@ chmod +x init.sh
 - `./scripts/generate-next-agent.sh <ROLE> [--notes ...] [--return-to ...] [--escalated-by ...] [--escalation-reason ...]` — write baton metadata with the same schema documented above.
 - `./scripts/resume-baton.sh [--force]` — mark HUMAN answers ready for runner resume.
 - `./scripts/validate_baton.py` — YAML schema helper used by checks.
+- Dependency note: YAML schema validation uses `PyYAML` (`python3 -m pip install pyyaml`).
 
 ## Runner commands
 
