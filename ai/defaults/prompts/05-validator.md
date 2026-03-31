@@ -25,18 +25,15 @@
 - `ai/iterations/ITER-0001.md`
 
 ## 4) Required actions
-- If `ai/user-questions.yaml` has `status: answered`, copy decisions to `ai/decision-lock.yaml` under `approved_decisions` and reset `ai/user-questions.yaml` to `status: none`.
-- Validate correctness, acceptance criteria, and regressions.
-- Call out missing tests or parity risks.
-- If validation blocked by missing user decision:
-  - Write questions to `ai/user-questions.yaml` with `status: waiting` and `return_to_role: VALIDATOR`.
-  - Optionally write `ai/next_agent.md` with validation blocker context.
-  - Do NOT modify `ai/active_agent.txt` or `ai/next_agent.yaml`; runner owns baton transitions.
-  - Output exactly `WAITING FOR USER` and stop.
+- Validate against goals, constraints, and acceptance criteria.
+- Identify regressions and missing coverage.
+- Escalate to SJE when failures are technical/judgment conflicts.
+- Escalate to PLANNER when acceptance target or scope is unclear.
+- Use HUMAN escalation only via SJE/PLANNER unless a direct tradeoff override is explicitly required.
 
 ## 5) End-of-turn required steps
 - Append iteration decision line.
-- Write `ai/next_agent.md` with detailed handoff notes for the next role.
-- Print exact message:
-`FINISHED: HANDING TO REVIEWER`
-- Stop.
+- Write concise handoff notes in `ai/next_agent.md`.
+- Print one exact terminal line:
+  - accepted: `FINISHED: HANDING TO PLANNER`
+  - rework/escalation: `FINISHED: HANDING TO ENGINEER`, `FINISHED: HANDING TO SENIOR_JUDGMENTAL_ENGINEER`, or `FINISHED: HANDING TO PLANNER`

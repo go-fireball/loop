@@ -1,6 +1,6 @@
 # Review Notes
 
-Use this file for reviewer outcomes:
+Use this file for validator outcomes:
 
 - **DONE**: item accepted and loop returns to PLANNER for next item.
 - **REVISE**: route back to specific role with explicit gap list.

@@ -5,7 +5,7 @@ core_rules:
 baton_rules:
   - ai/active_agent.txt is the source of truth for the current role
   - runner is the only component that may update ai/active_agent.txt and finalize baton transitions
-  - ai/next_agent.yaml carries baton state only (next_role, optional handoff_notes, optional return_to when HUMAN)
+  - ai/next_agent.yaml carries baton state only (next_role, optional handoff_notes, optional return_to when HUMAN, optional escalated_by, optional escalation_reason)
   - role behavior and prompt routing must come from static role mapping in the runner, never from generated YAML
   - if active agent mismatch, print exactly WAITING FOR BATON
   - on success, print exactly FINISHED: HANDING TO <ROLE>
