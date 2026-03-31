@@ -22,15 +22,27 @@ Make baton handling deterministic by separating **state** from **behavior**.
   - Optional, minimal baton metadata:
     - `next_role` (required when file exists)
     - `handoff_notes` (optional)
-    - `return_to` (optional, only when `next_role: HUMAN`)
+    - `return_to` (optional)
+    - `escalated_by` (optional)
+    - `escalation_reason` (optional)
 - `ai/next_agent.md`
   - Optional narrative handoff context only.
 - `scripts/generate-next-agent.sh`
-  - Generates minimal `ai/next_agent.yaml` only.
+  - Generates `ai/next_agent.yaml` with only canonical baton keys (`next_role`, optional `handoff_notes`, `return_to`, `escalated_by`, `escalation_reason`).
 - `scripts/check-baton.sh`
   - Validates active role and minimal baton schema; does not validate prompt behavior from YAML.
 - `scripts/run-baton.sh`
   - Reads active role from `ai/active_agent.txt`, resolves prompt via static mapping, executes, parses strict terminal contract, updates baton.
+
+## Active roles and default flow
+
+Active roles: `PLANNER`, `SENIOR_JUDGMENTAL_ENGINEER`, `ENGINEER`, `VALIDATOR`, `HUMAN`.
+
+Default happy path:
+
+`PLANNER -> SENIOR_JUDGMENTAL_ENGINEER -> ENGINEER -> VALIDATOR`
+
+`HUMAN` is used via escalation, not as a mandatory checkpoint.
 
 ## Strict handoff contract
 
@@ -39,8 +51,6 @@ Agents must end with exactly one of:
 - `FINISHED: HANDING TO <ROLE>`
 - `WAITING FOR USER`
 - `WAITING FOR BATON`
-
-No alternate phrasing is accepted.
 
 ## Baton flow
 
@@ -53,18 +63,6 @@ No alternate phrasing is accepted.
      - generate minimal `ai/next_agent.yaml` for `<ROLE>`
    - `WAITING FOR USER`
      - set `ai/active_agent.txt` to `HUMAN`
-     - generate minimal `ai/next_agent.yaml` with `next_role: HUMAN` and `return_to`
+     - generate minimal `ai/next_agent.yaml` with `next_role: HUMAN`, `return_to`, and escalation metadata
    - `WAITING FOR BATON`
      - stop with no baton transition
-
-## Why mismatch is now impossible
-
-Prompt mismatch used to happen because generated YAML mixed role state and role behavior.
-
-Now:
-
-- execution role = `ai/active_agent.txt`
-- prompt file = static map inside runner
-- generated YAML never carries prompt/config behavior
-
-So a malformed or stale `ai/next_agent.yaml` cannot reroute prompt selection.

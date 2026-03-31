@@ -8,11 +8,11 @@
 
 ## Local workflow
 1. `./scripts/check-baton.sh`
-2. Execute current role by following `ai/next_agent.yaml`.
+2. Execute the current role from `ai/active_agent.txt`.
 3. Append iteration decision line.
 4. Update baton handoff files.
 
 ## Quality
 - Keep solutions pragmatic and inspectable.
 - Add tests proportionate to change scope.
-- Escalate only for approved human-decision categories.
+- Escalate through PLANNER / SENIOR_JUDGMENTAL_ENGINEER before HUMAN when possible.

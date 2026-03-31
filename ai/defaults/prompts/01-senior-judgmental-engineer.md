@@ -19,27 +19,22 @@
 
 ## 3) Allowed edits (only)
 - `ai/simplification.md`
-- `ai/review.md` (only if adding judgment warnings)
+- `ai/review.md` (judgment/tradeoff notes)
 - `ai/decision-lock.yaml`
 - `ai/user-questions.yaml`
 - `ai/next_agent.md` (optional)
 - `ai/iterations/ITER-0001.md`
 
 ## 4) Required actions
-- If `ai/user-questions.yaml` has `status: answered`, copy decisions to `ai/decision-lock.yaml` under `approved_decisions` and reset `ai/user-questions.yaml` to `status: none`.
-- Apply practical engineering judgment to constrain overdesign.
-- Add explicit guardrails, tradeoff notes, and simplification instructions.
-- Ensure judgments in `ai/judgment.yaml` are reflected.
-- Escalate only for major tradeoffs; otherwise keep flow moving.
-- If a major tradeoff requires human decision:
+- Apply practical judgment, constraints, and architecture principles.
+- Resolve escalations from ENGINEER/VALIDATOR where possible.
+- Escalate to HUMAN only when unresolved ambiguity, conflicting constraints, or missing business context remains:
   - Write questions to `ai/user-questions.yaml` with `status: waiting` and `return_to_role: SENIOR_JUDGMENTAL_ENGINEER`.
-  - Optionally write `ai/next_agent.md` with tradeoff context.
-  - Do NOT modify `ai/active_agent.txt` or `ai/next_agent.yaml`; runner owns baton transitions.
   - Output exactly `WAITING FOR USER` and stop.
 
 ## 5) End-of-turn required steps
-- Append decision log line in `ai/iterations/ITER-0001.md`.
-- Write `ai/next_agent.md` with detailed handoff notes for the next role.
-- Print exact message:
-`FINISHED: HANDING TO ARCHITECT`
+- Append iteration log line.
+- Write `ai/next_agent.md` with concise handoff notes.
+- Default happy-path handoff:
+`FINISHED: HANDING TO ENGINEER`
 - Stop.
