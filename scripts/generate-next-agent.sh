@@ -3,7 +3,7 @@ set -euo pipefail
 #
 # Usage: ./scripts/generate-next-agent.sh <ROLE> [--notes "context"] [--return-to "ROLE"] [--escalated-by "ROLE"] [--escalation-reason "text"]
 #
-# Generates ai/next_agent.yaml with minimal baton metadata only.
+# Generates ai/next_agent.yaml using the canonical baton schema.
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"

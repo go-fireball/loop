@@ -14,7 +14,7 @@ Keep baton handling deterministic by separating state from behavior.
 
 `ai/next_agent.yaml` is baton metadata only and never prompt-routing config.
 
-## Minimal baton schema
+## Canonical baton schema
 
 `ai/next_agent.yaml` supports only:
 - `next_role` (required)

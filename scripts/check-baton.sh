@@ -87,9 +87,9 @@ else
   done
 fi
 
-# ── 4. Validate minimal next_agent.yaml (if present) ──
+# ── 4. Validate canonical next_agent.yaml schema (if present) ──
 echo ""
-echo "=== next_agent.yaml (optional minimal baton) ==="
+echo "=== next_agent.yaml (optional canonical baton metadata) ==="
 
 if [[ -f ai/next_agent.yaml ]]; then
   if command -v python3 >/dev/null 2>&1; then
